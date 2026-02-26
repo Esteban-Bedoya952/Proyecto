@@ -16,11 +16,11 @@ Proceso:
 
 Salidas: 
 - Categorias de despacho:
- - Gratis
- - Expres
- - Estandar
- - Adicional
-- Costo del envio
+ * Gratis
+ * Expres
+ * Estandar
+ * Adicional
+ * Costo del envio
 -Mensaje al cliente 
 
 
