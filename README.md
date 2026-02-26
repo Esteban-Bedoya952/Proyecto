@@ -1,5 +1,6 @@
 # Proyecto
 
+IPO:
 Entradas:
 - El monto del pepido (Decimal)
 - Ciudad de destino (String)
@@ -25,3 +26,11 @@ Salidas:
 - Costo del envio
 - Mensaje al cliente 
 
+Tabla de variables: 
+Nombre:            Tipo C#:          Propósito:
+Monto              Decimal           Valor 
+Ciudad             String            Destino del envío
+CntItems           Int               Número de ítems
+TipoCliente        String            "Nuevo" o "Recurrentes"
+CostoEnvio         Decimal           Resultado calculado
+Categoria          String            Tipo de despacho asignado
