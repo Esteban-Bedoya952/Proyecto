@@ -34,3 +34,6 @@ CntItems           Int               Número de ítems
 TipoCliente        String            "Nuevo" o "Recurrentes"
 CostoEnvio         Decimal           Resultado calculado
 Categoria          String            Tipo de despacho asignado
+
+ESTEBAN BEDOYA YEPES
+ANDRES MUÑETON
