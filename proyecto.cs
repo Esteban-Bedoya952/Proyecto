@@ -13,7 +13,7 @@ class Program
         Console.Write("Ingrese la ciudad destino: ");
         string ciudadDestino = Console.ReadLine().ToLower();
 
-        Console.Write("Ingrese el tipo de cliente (nuevo / recurrente): ");
+        Console.Write("Ingrese el tipo de cliente (nuevo / recurrente): ");               // Aqui debe ir el menu con las opciones, debe tener una lista y si el usuario se equivoca no debe tirar error
         string tipoCliente = Console.ReadLine().ToLower();
 
         Console.Write("Ingrese la cantidad de ítems: ");
