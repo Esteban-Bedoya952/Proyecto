@@ -1,0 +1,149 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+		// Mensaje de bienvenida melo caramelo
+        Console.WriteLine("Holaaa señor(a) usuario(a), bienvenido a tienda el tendero only onlain donde con mucho gusto  clasificamos su pedido <3");
+		
+
+       // El enu del cliente 
+        string tipoCliente = "";
+        bool opcionValida = false;
+
+        do
+        {
+            Console.WriteLine("\nBueno mi negro(a) ¿Eres cliente frecuente?");
+            Console.WriteLine("1. Oobvio, ¿Coomo así?");
+            Console.WriteLine("2. Nuu, ojala");
+            Console.Write("Selecciona una opción (1-2): ");
+            
+            string entrada = Console.ReadLine();
+
+            switch (entrada)
+            {
+                case "1":
+                    tipoCliente = "recurrente";
+                    Console.WriteLine("\nAy papa, este es de los míos"); // Mensaje especial
+                    opcionValida = true;
+                    break;
+                case "2":
+                    tipoCliente = "nuevo";
+                    Console.WriteLine("\nMmmm vea pues, ni modo mi hermanito(a), bienvenido de todas formas :)"); // Mensaje especial
+                    opcionValida = true;
+                    break;
+                default:
+                    Console.WriteLine("\nEepa, mi hermanito(a) ponga el 1 o el 2 que si no esta vaina no arranca pa ningun lao");
+                    break;
+            }
+        } while (!opcionValida);
+
+        // Los datos del cliente
+        Console.Write("\nIngresate el precio del pedido aqui porfa :) ");
+        decimal montoPedido = 0;
+        bool precioMelo = false;
+
+        do
+        {
+            Console.Write("");
+            string entrada = Console.ReadLine();
+
+            if (decimal.TryParse(entrada, out montoPedido) && montoPedido >= 0)
+            {
+                precioMelo = true; 
+            }
+            else
+            {
+                Console.WriteLine("\nSolo numeros en esta vaina mi hermano(a), ponete otra vez el precio porfa.");
+            }
+        } while (!precioMelo);
+
+       string ciudadDestino = "";
+        bool destinoMelo = false;
+
+        do
+        {
+            Console.Write("\n¿Pa onde es que va el pedido? ");
+            ciudadDestino = Console.ReadLine().ToLower();
+
+            if (double.TryParse(ciudadDestino, out _))
+            {
+                Console.WriteLine("\nNada de números solo letras, que si no el rapi se me embolata");
+            }
+            else if (string.IsNullOrWhiteSpace(ciudadDestino))
+            {
+                Console.WriteLine("\nNo me deje eso vacío, dígame pa' donde vamos.");
+            }
+            else
+            {
+                destinoMelo = true; // Si no es número y no está vacío, ¡estamos melos!
+            }
+        } while (!destinoMelo);
+
+       // Cantidad de productos
+        int cantidadItems = 0;
+        bool cantidadMela = false;
+
+        do
+        {
+            Console.Write("\n¿Cuantos productos es que son?: ");
+            string entradaItems = Console.ReadLine();
+
+            if (int.TryParse(entradaItems, out cantidadItems) && cantidadItems > 0)
+            {
+                cantidadMela = true;
+            }
+            else
+            {
+                Console.WriteLine("\nPor favor ingresate la cantidad de productos con numeros, que si no aqui nos quedamos todo el dia y tengo el fogon prendio");
+            }
+        } while (!cantidadMela);
+        // ===== VARIABLES =====
+        string categoriaDespacho;
+        decimal costoEnvio;
+        string mensajeCliente;
+
+        // 1°
+        if (montoPedido >= 150000 && tipoCliente == "recurrente")
+        {
+            categoriaDespacho = "Envío Gratis";
+            costoEnvio = 0;
+        }
+        // 2°
+        else if (cantidadItems >= 5 || montoPedido >= 300000)
+        {
+            categoriaDespacho = "Envío Express";
+            costoEnvio = 15000;
+        }
+        // 3°
+        else
+        {
+            categoriaDespacho = "Envío Estándar";
+            costoEnvio = 8000;
+        }
+
+        // 4°
+        if (ciudadDestino == "exterior")
+        {
+            costoEnvio = costoEnvio + 20000;
+        }
+
+        // Los mensajes finales
+        mensajeCliente = "Mi llave su pedido fue clasificado como: " + categoriaDespacho +
+                         ". El precio de envío es de $" + costoEnvio + ".";
+
+        decimal totalPagar = montoPedido + costoEnvio;
+
+        // El final
+        Console.WriteLine("\n=== Mi socio(a), pillate el resultado del pedido: ===");
+        Console.WriteLine(mensajeCliente);
+
+        Console.WriteLine("Lo que tiene que pagar ess el pedido mas el envío y son: $" + totalPagar);
+
+        Console.WriteLine("Eyyyyy, muchisimas gracias por comprar con tienda el tendero only onlain, esperamos que el servicio haya sido totalmente de su agrado y que tenga usted un excelnte resto de dia, vuelva pronto ;)");
+
+			
+
+    }
+}
