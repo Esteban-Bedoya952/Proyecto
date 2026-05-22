@@ -1,0 +1,249 @@
+using System;
+
+class Program
+{
+    /// <summary>
+    /* Este es el orquestador principal del programa y coordina el flujo llamando a las 
+    funciones de UI y de logica de negocio */
+    /// </summary>
+    static void Main(string[] args)
+    {
+        MostrarBienvenida();
+
+        // Aqui los datos del UI / Entrada
+        string tipoCliente = CapturarTipoCliente();
+        decimal montoPedido = CapturarMontoPedido();
+        string ciudadDestino = CapturarCiudadDestino();
+        int cantidadItems = CapturarCantidadItems();
+
+        // Aui la logica de calculo 
+        string categoriaDespacho = DeterminarCategoriaDespacho(montoPedido, tipoCliente, cantidadItems);
+        decimal costoEnvio = CalcularCostoEnvio(categoriaDespacho, ciudadDestino);
+        decimal totalPagar = CalcularTotalPagar(montoPedido, costoEnvio);
+
+        //  Y las salidas del UI / Salida
+        MostrarResultados(categoriaDespacho, costoEnvio, totalPagar);
+    }
+
+    #region Funciones de Interfaz de Usuario (UI - Entrada)
+
+    /// <summary>
+    /// Aqui muestra el mensaje de la bienvenida en la consola.
+    /// </summary>
+    static void MostrarBienvenida()
+    {
+        Console.WriteLine("Holaaa señor(a) usuario(a), bienvenido a tienda el tendero only onlain donde con mucho gusto clasificamos su pedido <3");
+    }
+
+    /// <summary>
+    /// Gestiona el menú de selección para el tipo de cliente con validación de datos.
+    /// </summary>
+    /// <returns> La cadena de texto con el tipo de cliente"recurrente" o "nuevo".</returns>
+    static string CapturarTipoCliente()
+    {
+        string tipoCliente = "";
+        bool opcionValida = false;
+
+        do
+        {
+            Console.WriteLine("\nBueno mi negro(a) ¿Eres cliente frecuente?");
+            Console.WriteLine("1. Oobvio, ¿Coomo así?");
+            Console.WriteLine("2. Nuu, ojala");
+            Console.Write("Selecciona una opción (1-2): ");
+
+            string entrada = Console.ReadLine();
+
+            switch (entrada)
+            {
+                case "1":
+                    tipoCliente = "recurrente";
+                    Console.WriteLine("\nAy papa, este es de los míos");
+                    opcionValida = true;
+                    break;
+                case "2":
+                    tipoCliente = "nuevo";
+                    Console.WriteLine("\nMmmm vea pues, ni modo mi hermanito(a), bienvenido de todas formas :)");
+                    opcionValida = true;
+                    break;
+                default:
+                    Console.WriteLine("\nEepa, mi hermanito(a) ponga el 1 o el 2 que si no esta vaina no arranca pa ningun lao");
+                    break;
+            }
+        } while (!opcionValida);
+
+        return tipoCliente;
+    }
+
+    /// <summary>
+    /// Aqui mira y valida que el monto del pedido sea un número decimal no negativo.
+    /// </summary>
+    /// <returns> El monto del pedido validado como decimal.</returns>
+    static decimal CapturarMontoPedido()
+    {
+        decimal montoPedido = 0;
+        bool precioMelo = false;
+
+        Console.Write("\nIngresate el precio del pedido aqui porfa :) ");
+        do
+        {
+            string entrada = Console.ReadLine();
+
+            if (decimal.TryParse(entrada, out montoPedido) && montoPedido >= 0)
+            {
+                precioMelo = true;
+            }
+            else
+            {
+                Console.WriteLine("\nSolo numeros en esta vaina mi hermano(a), ponete otra vez el precio porfa.");
+            }
+        } while (!precioMelo);
+
+        return montoPedido;
+    }
+
+    /// <summary>
+    /// Aqui coge la ciudad de destino validando que no sea vacía ni contenga valores numéricos.
+    /// </summary>
+    /// <returns>La cadena de texto de la ciudad en minúsculas.</returns>
+    static string CapturarCiudadDestino()
+    {
+        string ciudadDestino = "";
+        bool destinoMelo = false;
+
+        do
+        {
+            Console.Write("\n¿Pa onde es que va el pedido? ");
+            ciudadDestino = Console.ReadLine().ToLower();
+
+            if (double.TryParse(ciudadDestino, out _))
+            {
+                Console.WriteLine("\nNada de números solo letras, que si no el rapi se me embolata");
+            }
+            else if (string.IsNullOrWhiteSpace(ciudadDestino))
+            {
+                Console.WriteLine("\nNo me deje eso vacío, dígame pa' donde vamos.");
+            }
+            else
+            {
+                destinoMelo = true;
+            }
+        } while (!destinoMelo);
+
+        return ciudadDestino;
+    }
+
+    /// <summary>
+    /// Aqui coge y valida que la cantidad de productos sea un número entero mayor a cero.
+    /// </summary>
+    /// <returns> La cantidad de productos validada.</returns>
+    static int CapturarCantidadItems()
+    {
+        int cantidadItems = 0;
+        bool cantidadMela = false;
+
+        do
+        {
+            Console.Write("\n¿Cuantos productos es que son?: ");
+            string entradaItems = Console.ReadLine();
+
+            if (int.TryParse(entradaItems, out cantidadItems) && cantidadItems > 0)
+            {
+                cantidadMela = true;
+            }
+            else
+            {
+                Console.WriteLine("\nPor favor ingresate la cantidad de productos con numeros, que si no aqui nos quedamos todo el dia y tengo el fogon prendio");
+            }
+        } while (!cantidadMela);
+
+        return cantidadItems;
+    }
+
+    #endregion
+
+    #region Funciones de Lógica de Cálculo (Procesamiento Puro)
+
+    /// <summary>
+    /// Aqui aplica las reglas de negocio para determinar la categoría del despacho.
+    /// No interactúa con la consola.
+    /// </summary>
+    /// <param name="montoPedido">Monto total de los productos.</param>
+    /// <param name="tipoCliente">Tipo de cliente ("recurrente"/"nuevo").</param>
+    /// <param name="cantidadItems">Cantidad de artículos en el pedido.</param>
+    /// <returns>La categoría asignada ("Envío Gratis", "Envío Express" o "Envío Estándar").</returns>
+    static string DeterminarCategoriaDespacho(decimal montoPedido, string tipoCliente, int cantidadItems)
+    {
+        if (montoPedido >= 150000 && tipoCliente == "recurrente")
+        {
+            return "Envío Gratis";
+        }
+        else if (cantidadItems >= 5 || montoPedido >= 300000)
+        {
+            return "Envío Express";
+        }
+        else
+        {
+            return "Envío Estándar";
+        }
+    }
+
+    /// <summary>
+    /// Aqui calcula el costo base del envío según su categoría y añade el recargo internacional si aplica.
+    /// No interactúa con la consola.
+    /// </summary>
+    /// <param name="categoriaDespacho">Categoría previamente calculada.</param>
+    /// <param name="ciudadDestino">Ciudad o destino del envío.</param>
+    /// <returns>El valor final del envío.</returns>
+    static decimal CalcularCostoEnvio(string categoriaDespacho, string ciudadDestino)
+    {
+        decimal costoBase;
+
+        if (categoriaDespacho == "Envío Gratis")
+        {
+            costoBase = 0;
+        }
+        else if (categoriaDespacho == "Envío Express")
+        {
+            costoBase = 15000;
+        }
+        else
+        {
+            costoBase = 8000;
+        }
+
+        if (ciudadDestino == "exterior")
+        {
+            costoBase += 20000;
+        }
+
+        return costoBase;
+    }
+
+    /// <summary>
+    /// Aqui realiza la suma aritmética del monto total a pagar.
+    /// </summary>
+    static decimal CalcularTotalPagar(decimal montoPedido, decimal costoEnvio)
+    {
+        return montoPedido + costoEnvio;
+    }
+
+    #endregion
+
+    #region Funciones de Interfaz de Usuario (UI - Salida)
+
+    /// <summary>
+    /// Aqui muestra la información final calculada y los agradecimientos al usuario.
+    /// </summary>
+    static void MostrarResultados(string categoriaDespacho, decimal costoEnvio, decimal totalPagar)
+    {
+        string mensajeCliente = "Mi llave su pedido fue classified como: " + categoriaDespacho +
+                                 ". El precio de envío es de $" + costoEnvio + ".";
+
+        Console.WriteLine("\n=== Mi socio(a), pillate el resultado del pedido: ===");
+        Console.WriteLine(mensajeCliente);
+        Console.WriteLine("Lo que tiene que pagar ess el pedido mas el envío y son: $" + totalPagar);
+        Console.WriteLine("Eyyyyy, muchisimas gracias por comprar con tienda el tendero only onlain, esperamos que el servicio haya sido totalmente de su agrado y que tenga usted un excelnte resto de dia, vuelva pronto ;)");
+    }
+
+    #endregion
+}
