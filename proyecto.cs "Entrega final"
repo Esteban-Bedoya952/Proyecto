@@ -4,7 +4,7 @@ class Program
 {
     /// <summary>
     /* Este es el orquestador principal del programa y coordina el flujo llamando a las 
-    funciones de UI y de logica de negocio */
+    funciones de UI y de la logica de negocio */
     /// </summary>
     static void Main(string[] args)
     {
